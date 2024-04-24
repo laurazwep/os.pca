@@ -2,6 +2,7 @@
 
 export(os_pca)
 export(plot_eigval)
+export(plot_ordering)
 export(plot_os_catquants)
 export(plot_os_loadings)
 import(homals)

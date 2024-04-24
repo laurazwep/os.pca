@@ -100,7 +100,15 @@ lines(matrix(c(0,pl1[ndim+1],length(pl1)+1,pl1[ndim+1]),nrow=2,byrow=T),lty=2)
 
 
 #end screeplot-------------------------------------------
-
+#' Ordering plot
+#'
+#'
+#' @param output Output from os_pca
+#' @param plot_var Select which variable should be plotted by giving numeric index
+#'
+#' @returns plot of the optimal ordering of the categories the selected variable
+#'
+#' @export
 plot_ordering<-function(output,plot_var){
 c_ncat<-output$c_ncat;os_catquants<-output$os_catquants
 invar<-plot_var;inj<-(c_ncat[invar]+1):c_ncat[invar+1];

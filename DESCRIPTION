@@ -1,10 +1,11 @@
 Package: os.pca
-Title: What the Package Does (One Line, Title Case)
+Title: Optimal Scaling Principal Component Analysis
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Authors@R: c(
+    person("Jacqueline J.", "Meulman", , "jjmeulman@luxs-datascience.nl", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5447-7195")))
+Description: This wrapper for the homals package modifies and scales the output 
+    to align with optimal scaling PCA. Includes plot functions and extra outputs.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8

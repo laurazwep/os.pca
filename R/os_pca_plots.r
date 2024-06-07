@@ -33,9 +33,9 @@ plot_os_loadings<-function(output,plot_vars,var_sel,pldim){
   lines(matrix(c(0,min(minx,miny),0,maxx),nrow=2,byrow=T),lty=2)
   for (i in plot_vars) {
     arrows(0, 0, os_loadings[i, 1], os_loadings[i, 2], length = 0.08)
-    posvec <- apply(os_loadings, 1, sign)[2, ] + 2
-    text(os_loadings[plot_vars,], labels = rownames(os_loadings)[plot_vars], pos = posvec, cex = 0.7)
   }
+  posvec <- apply(os_loadings, 1, sign)[2, ] + 2
+  text(os_loadings[plot_vars,], labels = rownames(os_loadings)[plot_vars], pos = posvec, cex = 0.7)
   return(os_loadings)
 }
 # end plot loadings
@@ -52,6 +52,7 @@ plot_os_loadings<-function(output,plot_vars,var_sel,pldim){
 #'
 #' @export
 plot_os_catquants<-function(output,plot_vars,rcplot){
+  level <- output$level
 os_loadings<-output$os_loadings; Title<-rownames(os_loadings)
 os_catquants<-output$os_catquants;c_ncat<-output$c_ncat
 #plot original categories and quantifications plots for selected variables
@@ -61,7 +62,7 @@ par(mfrow = rcplot);
 for (j in plot_vars) {
             invar<-j;inj<-(c_ncat[invar]+1):c_ncat[invar+1];
             pl1<-cbind(as.vector(c(1:length(inj))),os_catquants[inj,])
-            title<-c(Title[j],level[j])
+            title<-c(Title[j])
             plot(type='n',pl1,xlab="original categories",ylab="optimal quantifications",main=title,axes=FALSE);
             clm<-ceiling(max(abs(os_catquants[inj,])));r<-c(1:(2*clm))/2
             axis(1,1:length(inj));axis(2,c(rev(r*-1),0,r),las=2);box()

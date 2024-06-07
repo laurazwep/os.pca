@@ -95,7 +95,7 @@ for (j in 1:nvar) {inj<-((1+c_ncat[j]):c_ncat[j+1]);GV[,j]<-Gtot[,inj]%*%Vtot[in
 # GV is the transformed data matrix
 os_data<-GV
 results <- list(eigenvalues = EV1, VAF = VAF, os_catquants = as.data.frame(os_catquants), os_loadings = as.data.frame(os_loadings), os_scores = as.data.frame(os_scores),
-                 os_data = os_data,c_ncat = c_ncat)
+                 os_data = os_data,c_ncat = c_ncat, level = level)
 
   return(results)
 }

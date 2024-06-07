@@ -4,7 +4,7 @@
 \alias{os_pca}
 \title{Optimal Scaling PCA}
 \usage{
-os_pca(data, level, ndim, output_only = FALSE)
+os_pca(data, level, ndim, reflec1, reflec2, homals_only = FALSE)
 }
 \arguments{
 \item{data}{A data.frame input data for os_pca}

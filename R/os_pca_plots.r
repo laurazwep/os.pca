@@ -30,7 +30,7 @@ if (ndim == 1) {
 nvar<-dim(os_loadings)[1]
 if (missing(plot_vars)) plot_vars<-1:nvar
 if (missing(var_sel)) var_sel<-0
-if (var_sel == 1) {VAF<-output$VAF;invar<-(VAF+sd(VAF))>mean(VAF)
+if (var_sel > 0) {VAF<-output$VAF;invar<-(VAF+var_sel*sd(VAF))>mean(VAF)
     plot_vars<-plot_vars[invar]}
 par(mfrow=c(1,1),pty='s')
 minx<-min(os_loadings[,1]*1.5);maxx<-max(os_loadings[,1]*1.5)

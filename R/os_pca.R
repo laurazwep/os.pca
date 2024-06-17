@@ -3,18 +3,6 @@
 # matrices for homals results have been corrected
 # output: os_scores, os_loadings, os_data, os_catquants
 
-#recoding of the data to prevent errors in homals coding of order of columns indicator matrix when ncat>9
-
-#' @noRd
-recode <- function(data) {
-  for (j in 1:ncol(data)) {
-    var_j <- as.factor(data[, j])
-    levels(var_j) <- sort(levels(var_j))
-    data[, j] <- var_j
-  }
-  return(data)
-}
-
 #' Optimal Scaling PCA
 #'
 #' OS_PCA, based on homals in R. Errors in ordinal optimal scaling have been corrected.
@@ -25,12 +13,14 @@ recode <- function(data) {
 #' @param data A data.frame input data for os_pca
 #' @param level Which quantification levels. Possible values are `"nominal"`, `"ordinal"`, and `"numerical"` which can be defined as single character (if all variable are of the same level) or as vector which length corresponds to the number of variables.
 #' @param ndim Number of dimensions to be extracted.
-#' @param output_only Output only homals output or also other objects
+#' @param reflec1 Boolean, if TRUE, let the largest loading point to positive side in the first dimension
+#' @param reflec2 Boolean, if TRUE, the direstion of the original variable is preserved in the transformation function
+#' @param homals_only Output only homals output or also other objects
 #'
 #' @returns Object with os_scores, os_loadings, os_data, os_catquants
 #'
 #' @import homals
-#' @export
+#' @export os_pca
 os_pca <- function(data, level, ndim, reflec1, reflec2, homals_only = FALSE) {
   data_b<-recode(data)
   if (missing(reflec1)) reflec1 <- 1

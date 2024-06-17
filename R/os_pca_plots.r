@@ -8,7 +8,7 @@
 #'
 #' @returns Loading plot from optimal scaling PCA object
 #'
-#' @export
+#' @export plot.os_loadings
 plot.os_loadings<-function(output,plot_vars,var_sel,pldim){
 if (missing(pldim)) pldim<-2
 os_loadings<-output$os_loadings
@@ -61,7 +61,7 @@ for (i in plot_vars) {
 #'
 #' @returns Loading plot from optimal scaling PCA object
 #'
-#' @export
+#' @export plot.os_catquants
 plot.os_catquants<-function(output,plot_vars,rcplot){
 os_loadings<-output$os_loadings; Title<-rownames(os_loadings)
 os_catquants<-output$os_catquants;c_ncat<-output$c_ncat
@@ -91,7 +91,7 @@ for (j in plot_vars) {
 #'
 #' @returns Scree plot from optimal scaling PCA object
 #'
-#' @export
+#' @export plot.eigval
 # Scree plot
 plot.eigval<-function(output) {
 Evalues<-output[[1]]
@@ -119,7 +119,7 @@ lines(matrix(c(0,pl1[ndim+1],length(pl1)+1,pl1[ndim+1]),nrow=2,byrow=T),lty=2)
 #'
 #' @returns plot of the optimal ordering of the categories the selected variable
 #'
-#' @export
+#' @export plot.ordering
 plot.ordering<-function(output,plot_var){
 c_ncat<-output$c_ncat;os_catquants<-output$os_catquants
 invar<-plot_var;inj<-(c_ncat[invar]+1):c_ncat[invar+1];

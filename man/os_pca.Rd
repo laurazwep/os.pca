@@ -13,7 +13,11 @@ os_pca(data, level, ndim, reflec1, reflec2, homals_only = FALSE)
 
 \item{ndim}{Number of dimensions to be extracted.}
 
-\item{output_only}{Output only homals output or also other objects}
+\item{reflec1}{Boolean, if TRUE, let the largest loading point to positive side in the first dimension}
+
+\item{reflec2}{Boolean, if TRUE, the direstion of the original variable is preserved in the transformation function}
+
+\item{homals_only}{Output only homals output or also other objects}
 }
 \value{
 Object with os_scores, os_loadings, os_data, os_catquants

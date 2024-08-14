@@ -21,12 +21,9 @@
 #'
 #' @import homals
 #' @export os_pca
-os_pca <- function(data, level, ndim, reflec1, reflec2, homals_only = FALSE) {
+os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only = FALSE, as.is = TRUE, keep_data = FALSE) {
   data_b<-recode(data)
-  if (missing(reflec1)) reflec1 <- 1
-  if (missing(reflec2)) reflec2 <- 1
-  if (missing(level))  level<-rep("nominal",ncol(data))
-  if (missing(ndim)) ndim<-2
+  if (missing(level)) level<-rep("nominal",ncol(data))
   output <- homals(data_b, ndim = ndim, rank = 1, level = level, sets = 0,
                 active = TRUE, eps = 1E-8, itermax = 10000, verbose = 0)
   if (homals_only) {
@@ -88,12 +85,15 @@ if (reflec1 == 1)
 # we don't use these. Normalization probably also wrong. Order also wrong?
 
 # Form transformed data matrix on the basis of indicator matrices and category quantifications, possibly with reversed signs
-Vtot<-os_catquants;Gtot<-output$ind.mat;GV<-data*0;
+num_data <- data
+num_data[] <- lapply(data, function(x) as.numeric(as.factor(as.numeric(x))))
+
+Vtot<-os_catquants;Gtot<-output$ind.mat;GV=num_data*0
 for (j in 1:nvar) { inj<-((1+c_ncat[j]):c_ncat[j+1]);
                     GV[,j]<-Gtot[,inj]%*%Vtot[inj,]
                   }
 # GV is the transformed data matrix
-os_data<-GV; cc2<-cc1<-cor(cbind(data,os_data))
+os_data<-GV; cc2<-cc1<-cor(cbind(num_data,os_data))
 
 # check whether transformation is predominantly increasing or decreasing.
 # this is related to direction of vectors for loadings in plot
@@ -109,12 +109,12 @@ if (reflec2 == 1)
 }
 
 # Form transformed data matrix on the basis of indicator matrices and category quantifications, possibly with reversed signs
-Vtot<-os_catquants;Gtot<-output$ind.mat;GV<-data*0;
+Vtot<-os_catquants;Gtot<-output$ind.mat;GV<-num_data*0;
 for (j in 1:nvar) { inj<-((1+c_ncat[j]):c_ncat[j+1]);
                     GV[,j]<-Gtot[,inj]%*%Vtot[inj,]
                   }
 # GV is the transformed data matrix
-os_data<-GV; cc2<-cor(cbind(data,os_data))
+os_data<-GV; cc2<-cor(cbind(num_data,os_data))
 
 
 
@@ -122,6 +122,9 @@ results <- list(eigenvalues = EV1, VAF = VAF, os_catquants = as.data.frame(os_ca
                 os_loadings = as.data.frame(os_loadings), os_scores = as.data.frame(os_scores),
                 os_centroids = as.data.frame(os_centroids),
                 os_data = os_data,c_ncat = c_ncat, level = level, ndim = ndim, cc1=cc1, cc2=cc2)
+if (keep_data) {
+  results$data <- data
+}
 
   return(results)
 }

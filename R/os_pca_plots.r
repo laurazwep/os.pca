@@ -45,8 +45,8 @@ lines(matrix(c(0,min(minx,miny),0,maxx),nrow=2,byrow=T),lty=2)
 for (i in plot_vars) {
     arrows(0, 0, os_loadings[i, 1], os_loadings[i, 2], length = 0.08)
     posvec <- apply(os_loadings, 1, sign)[2, ] + 2
-    text(os_loadings[plot_vars,], labels = rownames(os_loadings)[plot_vars], pos = posvec, cex = 0.7)
-    }
+}
+text(os_loadings[plot_vars,], labels = rownames(os_loadings)[plot_vars], pos = posvec, cex = 0.7)
 # points(os_scores[,1:2]) ; # perhaps later in biplot option
 # if (ndim > 1) points(output$os_centroids)[,1:2]
 }
@@ -69,6 +69,11 @@ level<-output$level
 #plot original categories and quantifications plots for selected variables
 if (missing(plot_vars)) plot_vars<-1:(length(c_ncat)-1)
 if (missing(rcplot)) rcplot <- c(3,ceiling(length(plot_vars)/3))
+
+if (is.character(plot_vars)) {
+  plot_vars <- (1:ncol(output$os_data))[colnames(output$os_data) %in% plot_vars]
+}
+
 par(mfrow = rcplot);
 for (j in plot_vars) {
             invar<-j;inj<-(c_ncat[invar]+1):c_ncat[invar+1];

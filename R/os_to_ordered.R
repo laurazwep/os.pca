@@ -3,15 +3,23 @@
 #' translate the results of the os_pca function to ordered factors, to use as
 #' input for `rvinecopulib`'s `vine` function
 #'
-#' @param data A data.frame input data for os_pca
 #' @param os_object Object with os_scores, os_loadings, os_data, os_catquants
 #' from the `os_pca` function
+#' @param data A data.frame input data for os_pca, if ommitted data from os_pca
+#' function can be used (only when `keep_data` is TRUE)
+#'
 #'
 #' @returns Object with oredered categorical data (cat_data) and the levels of
 #' those ordered factors
 #'
 #' @export os_to_ordered
-os_to_ordered <- function(data, os_object) {
+os_to_ordered <- function(os_object, data) {
+  if (missing(data)) {
+    if (is.null(os_object$data)) {
+      stop("Add data to data object!")
+    }
+    data <- os_object$data
+  }
   cat_data <- data
   os_cols <- names(cat_data)[os_object$level != "numerical"]
   cat_data[, os_cols] <- os_object$os_data[, os_cols]
@@ -25,5 +33,7 @@ os_to_ordered <- function(data, os_object) {
   }
   names(trans_list) <- os_cols
 
-  return(list(cat_data = cat_data, os_levels = trans_list))
+  attr(cat_data, "os_levels") <- trans_list
+
+  return(cat_data)
 }

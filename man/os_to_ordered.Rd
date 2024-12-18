@@ -4,13 +4,14 @@
 \alias{os_to_ordered}
 \title{Output OSPCA to ordered factors}
 \usage{
-os_to_ordered(data, os_object)
+os_to_ordered(os_object, data)
 }
 \arguments{
-\item{data}{A data.frame input data for os_pca}
-
 \item{os_object}{Object with os_scores, os_loadings, os_data, os_catquants
 from the \code{os_pca} function}
+
+\item{data}{A data.frame input data for os_pca, if ommitted data from os_pca
+function can be used (only when \code{keep_data} is TRUE)}
 }
 \value{
 Object with oredered categorical data (cat_data) and the levels of

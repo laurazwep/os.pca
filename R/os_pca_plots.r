@@ -130,7 +130,6 @@ c_ncat<-output$c_ncat;os_catquants<-output$os_catquants
 invar<-plot_var;inj<-(c_ncat[invar]+1):c_ncat[invar+1];
 pl1<-cbind(as.vector(c(1:length(inj))),os_catquants[inj,])
 Title<-rownames(output$os_loadings);title<-c("transformation",Title[invar])
-par(mfrow=c(1,2))
 plot(type='n',pl1,xlab="original categories",ylab="optimal quantifications",main=title,axes=FALSE);
 clm<-ceiling(max(abs(os_catquants[inj,])));r<-c(1:(2*clm))/2
 axis(1,1:length(inj));axis(2,c(rev(r*-1),0,r),las=2);box()

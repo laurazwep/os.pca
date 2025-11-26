@@ -47,13 +47,11 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   # principal components are called objscores; rescale to variance=1
   # construct matrix with loadings
 
-
   loadings <- matrix(unlist(output$loadings), ncol = ndim, byrow = TRUE)
   var_names <- colnames(data)
   rownames(loadings) <- var_names
   # loadings <- t(sapply(output$loadings, function(xy) xy[1, c(1,2)]))
   os_loadings <- loadings * (nvar**.5)
-
 
   objscores <- output$objscores
   n <- (dim(objscores))[1]
@@ -69,7 +67,6 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
     os_centroids[inj, ] <- matrix(as.vector(t(os_centroids[inj, ])), nrow = ncat[j])
     catscores[inj, ] <- matrix(as.vector(t(catscores[inj, ])), nrow = ncat[j])
   }
-
 
   EV1 <- colSums(os_loadings**2)
   VAF <- rowSums(os_loadings**2)
@@ -89,7 +86,8 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   # transformed data matrix; for homals, multiple transformed data matrices!
   # we don't use these. Normalization probably also wrong. Order also wrong?
 
-  # Form transformed data matrix on the basis of indicator matrices and category quantifications, possibly with reversed signs
+  # Form transformed data matrix on the basis of indicator matrices and category
+  # quantifications, possibly with reversed signs
   num_data <- data
   num_data[] <- lapply(data, function(x) as.numeric(as.factor(as.numeric(x))))
 
@@ -129,8 +127,6 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   # GV is the transformed data matrix
   os_data <- GV
   cc2 <- cor(cbind(num_data, os_data))
-
-
 
   results <- list(
     eigenvalues = EV1, VAF = VAF, os_catquants = as.data.frame(os_catquants),

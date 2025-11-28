@@ -4,7 +4,7 @@
 \alias{plot.ordering}
 \title{Ordering plot}
 \usage{
-\method{plot}{ordering}(output, plot_var)
+\method{plot}{ordering}(output, plot_var, which_plot = 1)
 }
 \arguments{
 \item{output}{Output from os_pca}

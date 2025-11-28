@@ -24,7 +24,7 @@ os_pca(
 
 \item{reflec1}{Boolean, if TRUE, let the largest loading point to positive side in the first dimension}
 
-\item{reflec2}{Boolean, if TRUE, the direstion of the original variable is preserved in the transformation function}
+\item{reflec2}{Boolean, if TRUE, the direction of the original variable is preserved in the transformation function}
 
 \item{homals_only}{Output only homals output or also other objects}
 }

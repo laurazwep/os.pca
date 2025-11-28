@@ -79,12 +79,11 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   num_data <- data
   num_data[] <- lapply(data, function(x) as.numeric(as.factor(as.numeric(x))))
 
-  Vtot <- os_catquants
   Gtot <- output$ind.mat
   GV <- num_data * 0
   for (j in 1:nvar) {
     inj <- ((1 + c_ncat[j]):c_ncat[j + 1])
-    GV[, j] <- Gtot[, inj] %*% Vtot[inj, ]
+    GV[, j] <- Gtot[, inj] %*% os_catquants[inj, ]
   }
   # GV is the transformed data matrix
   os_data <- GV
@@ -105,7 +104,7 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
     }
     for (j in 1:nvar) {
       inj <- ((1 + c_ncat[j]):c_ncat[j + 1])
-      GV[, j] <- Gtot[, inj] %*% Vtot[inj, ]
+      GV[, j] <- Gtot[, inj] %*% os_catquants[inj, ]
     }
     os_data <- GV
     cc1 <- cor(cbind(num_data, os_data))

@@ -57,6 +57,10 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   catscores <- sqrt(n*nvar) * do.call("rbind", output$catscores)
   os_catquants <- sqrt(n) * matrix(unlist(output$low.rank))
 
+  #catquants per category
+  os_cat_list <- lapply(output$low.rank, function(x) sqrt(n)*x)
+  orig_values <- lapply(output$low.rank, function(x) row.names(x))
+
   #calculate eigenvalues and variance accounted for
   EV1 <- colSums(os_loadings^2)
   VAF <- rowSums(os_loadings^2)
@@ -79,42 +83,48 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
   num_data <- data
   num_data[] <- lapply(data, function(x) as.numeric(as.factor(as.numeric(x))))
 
-  Gtot <- output$ind.mat
-  GV <- num_data * 0
+  # transformed data matrix
+  GV <- data_b
   for (j in 1:nvar) {
-    inj <- ((1 + c_ncat[j]):c_ncat[j + 1])
-    GV[, j] <- Gtot[, inj] %*% os_catquants[inj, ]
+    map <- setNames(os_cat_list[[j]], orig_values[[j]])
+    GV[, j] <- map[GV[, j]]
   }
   # GV is the transformed data matrix
   os_data <- GV
-  cc1 <- cor(cbind(num_data, os_data))
-
+  cc1 <- suppressWarnings(cor(cbind(num_data, os_data), use = "pairwise.complete.obs"))
 
   # check whether transformation is predominantly increasing or decreasing.
   # this is related to direction of vectors for loadings in plot
   # correlation between original and transformed should be positive. If not, reverse the signs. Also for loadings.
   # compute new transformed data matrix
   if (reflec2 == 1) {
-    for (j in 1:nvar) {
-      inj <- (1 + c_ncat[j]):c_ncat[j + 1]
-      if (cc1[j, nvar + j] < 0) {
-        os_catquants[inj, ] <- os_catquants[inj, ] * -1
-        os_loadings[j, ] <- os_loadings[j, ] * -1
+    cor_quant_orig <- diag(cc1[1:nvar, (nvar + 1):(nvar*2)])
+    if (any(cor_quant_orig < 0)) {
+      col_flipped <- which(cor_quant_orig < 0)
+      for (j in col_flipped) {
+        inj <- (1 + c_ncat[j]):c_ncat[j + 1]
+        if (cc1[j, nvar + j] < 0) {
+          os_catquants[inj, ] <- os_catquants[inj, ] * -1
+          os_loadings[j, ] <- os_loadings[j, ] * -1
+          os_cat_list[[j]] <- os_cat_list[[j]] * -1
+        }
       }
+      GV <- data_b
+      for (j in 1:nvar) {
+        map <- setNames(os_cat_list[[j]], orig_values[[j]])
+        GV[, j] <- map[GV[, j]]
+      }
+      os_data <- GV
+      cc1 <- suppressWarnings(cor(cbind(num_data, os_data), use = "pairwise.complete.obs"))
     }
-    for (j in 1:nvar) {
-      inj <- ((1 + c_ncat[j]):c_ncat[j + 1])
-      GV[, j] <- Gtot[, inj] %*% os_catquants[inj, ]
-    }
-    os_data <- GV
-    cc1 <- cor(cbind(num_data, os_data))
   }
+  cor_matrix <- cc1[1:nvar, (nvar + 1):(nvar*2)]
 
   results <- list(
     eigenvalues = EV1, VAF = VAF, os_catquants = as.data.frame(os_catquants),
     os_loadings = as.data.frame(os_loadings), os_scores = as.data.frame(os_scores),
-    os_centroids = as.data.frame(os_centroids),
-    os_data = os_data, c_ncat = c_ncat, level = level, ndim = ndim, cc1 = cc1
+    os_centroids = as.data.frame(os_centroids), os_data = os_data,
+    c_ncat = c_ncat, level = level, ndim = ndim, cc1 = cor_matrix
   )
   if (keep_data) {
     results$data <- data

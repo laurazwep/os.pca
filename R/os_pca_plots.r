@@ -10,7 +10,9 @@
 #'
 #' @export plot.os_loadings
 plot.os_loadings <- function(output, plot_vars, var_sel, pldim) {
-  if (missing(pldim)) pldim <- 2
+  if (missing(pldim)) {
+    pldim <- 2
+  }
   os_loadings <- output$os_loadings
   os_scores <- output$os_scores
   ndim <- dim(os_loadings)[2]
@@ -34,8 +36,12 @@ plot.os_loadings <- function(output, plot_vars, var_sel, pldim) {
     }
   }
   nvar <- dim(os_loadings)[1]
-  if (missing(plot_vars)) plot_vars <- 1:nvar
-  if (missing(var_sel)) var_sel <- 0
+  if (missing(plot_vars)) {
+    plot_vars <- 1:nvar
+  }
+  if (missing(var_sel)) {
+    var_sel <- 0
+  }
   if (var_sel > 0) {
     VAF <- output$VAF
     invar <- (VAF + var_sel * sd(VAF)) > mean(VAF)
@@ -109,6 +115,7 @@ plot.os_catquants <- function(output, plot_vars, rcplot) {
     lines(type = "s", pl1, col = "black", lty = 1, lwd = 2)
     points(pl1, col = "black", lty = 1, lwd = 2)
   }
+  par(mfrow = c(1, 1))
 }
 # end plot catquants --------------------------------------------
 

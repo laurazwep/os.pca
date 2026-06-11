@@ -27,7 +27,7 @@ os_pca <- function(data, level, ndim = 2, reflec1 = 1, reflec2 = 1, homals_only 
     level <- rep("nominal", ncol(data))
   }
   #scale using the homals algorithm
-  output <- homals(data_b, ndim = ndim, rank = 1, level = level, sets = 0,
+  output <- homals::homals(data_b, ndim = ndim, rank = 1, level = level, sets = 0,
                    active = TRUE, eps = 1E-8, itermax = 10000, verbose = 0)
   if (homals_only) {
     return(output)

@@ -1,0 +1,66 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# os.pca
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+`os.pca` is a wrapper package for `homals`, and modifies and scales the
+output to align with optimal scaling PCA. Includes plot functions and
+extra outputs.
+
+## Installation
+
+You can install the development version of os.pca from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("laurazwep/os.pca")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+``` r
+library(os.pca)
+```
+
+Create example data
+
+``` r
+set.seed(123)
+n <- 500
+x1_cat <- sample(c(1, 2, 3), size = n, replace = TRUE)
+x2 <- x1_cat*4 + rnorm(n)
+x1_cat <- factor(x1_cat, labels = c("B", "A", "C"))
+x1_cat <- relevel(x1_cat, ref = "A")
+test_data <- data.frame(x1 = x1_cat, x2 = x2)
+
+plot(test_data)
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+Apply os.copula
+
+``` r
+output_nom <- os_pca(data = test_data, level = c("nominal", "numerical"), ndim = 1)
+```
+
+Plot functions
+
+``` r
+plot.os_catquants(output_nom, plot_vars = 1, rcplot = c(1, 1))
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" />
+
+``` r
+plot.os_loadings(output_nom)
+```
+
+<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" />

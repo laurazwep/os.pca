@@ -4,17 +4,21 @@
 \alias{os_to_ordered}
 \title{Output OSPCA to ordered factors}
 \usage{
-os_to_ordered(os_object, data)
+os_to_ordered(os_object, data, trans_list = NULL)
 }
 \arguments{
 \item{os_object}{Object with os_scores, os_loadings, os_data, os_catquants
 from the \code{os_pca} function}
 
-\item{data}{A data.frame input data for os_pca, if ommitted data from os_pca
+\item{data}{A data.frame input data for os_pca, if omitted data from os_pca
 function can be used (only when \code{keep_data} is TRUE)}
+
+\item{trans_list}{A named list of ordered character vectors (as returned in
+\code{attr(cat_data, "os_levels")}), one per categorical column. If provided,
+\code{os_object$data} can be NULL.}
 }
 \value{
-Object with oredered categorical data (cat_data) and the levels of
+Object with ordered categorical data (cat_data) and the levels of
 those ordered factors
 }
 \description{
